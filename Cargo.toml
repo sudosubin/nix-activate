@@ -1,0 +1,11 @@
+[package]
+name = "nix-activate"
+version = "0.1.0"
+authors = ["Subin Kim <sudosubin@gmail.com>"]
+edition = "2024"
+
+[dependencies]
+colored = "^3.0.0"
+git-url-parse = "^0.4.5"
+git2 = "^0.20.1"
+url = { version = "*", features = ["std"] }
