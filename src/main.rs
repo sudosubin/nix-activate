@@ -12,7 +12,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let current_dir = std::env::current_dir()?;
     let envrc_path = current_dir.join(".envrc");
 
-    // check current directory
+    // check current directory's flake
     if current_dir.join("flake.nix").exists() {
         return write_use_flake(&envrc_path, ".");
     }
@@ -32,7 +32,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     };
 
-    // check git directory
+    // check git directory's flake
     if let Ok(repo) = Repository::open(&current_dir) {
         for remote in repo.remotes()?.iter().flatten() {
             let url = repo
@@ -49,6 +49,24 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 }
             }
         }
+    }
+
+    // check local-only flake
+    let current_dir_str = current_dir.to_str().unwrap();
+    let fullname = current_dir_str
+        .split(std::path::MAIN_SEPARATOR_STR)
+        .collect::<Vec<_>>()
+        .iter()
+        .rev()
+        .take(3)
+        .rev()
+        .cloned()
+        .collect::<Vec<_>>()
+        .join(std::path::MAIN_SEPARATOR_STR);
+
+    let path = PathBuf::from_iter([&nix_activate_root, &fullname]);
+    if path.join("flake.nix").exists() {
+        return write_use_flake(&envrc_path, path.to_str().unwrap());
     }
 
     warn!("no flake found");
