@@ -2,7 +2,7 @@
 mod log;
 
 use git_url_parse::GitUrl;
-use git2::Repository;
+use git2::{Repository, RepositoryOpenFlags};
 use std::env;
 use std::fs::File;
 use std::io::Write;
@@ -33,7 +33,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     };
 
     // check git directory's flake
-    if let Ok(repo) = Repository::open(&current_dir) {
+    if let Ok(repo) = Repository::open_ext(
+        &current_dir,
+        RepositoryOpenFlags::empty(),
+        env::var("HOME").ok().as_deref(),
+    ) {
         // Get the relative path from repository root to current directory
         let repo_root = repo.workdir().unwrap();
         let relative_path = current_dir
