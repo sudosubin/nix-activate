@@ -6,5 +6,6 @@ A simple script to enable nix flake direnv from current directory or external fl
    - ex. `use flake .`
 2. check git directory's flake
    - ex. `use flake /path/to/flakes/github.com/sudosubin/nix-activate`
+   - supports git subdirectories: `use flake /path/to/flakes/github.com/sudosubin/nix-activate/v2`
 3. check local-only flake
    - ex. `use flake /path/to/flakes/local/sudosubin/nix-activate`

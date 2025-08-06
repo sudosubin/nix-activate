@@ -34,6 +34,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // check git directory's flake
     if let Ok(repo) = Repository::open(&current_dir) {
+        // Get the relative path from repository root to current directory
+        let repo_root = repo.workdir().unwrap();
+        let relative_path = current_dir
+            .strip_prefix(repo_root)
+            .ok()
+            .and_then(|p| p.to_str())
+            .unwrap_or("");
+
         for remote in repo.remotes()?.iter().flatten() {
             let url = repo
                 .find_remote(remote)
@@ -43,7 +51,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
             if let Some(url) = url {
                 let host = url.host.unwrap_or("_".to_string());
-                let path = PathBuf::from_iter([&nix_activate_root, &host, &url.fullname]);
+                let path =
+                    PathBuf::from_iter([&nix_activate_root, &host, &url.fullname, relative_path]);
+
                 if path.join("flake.nix").exists() {
                     return write_use_flake(&envrc_path, path.to_str().unwrap());
                 }
