@@ -9,3 +9,10 @@ colored = "^3.0.0"
 git-url-parse = "^0.4.5"
 git2 = "^0.20.1"
 url = { version = "*", features = ["std"] }
+
+[profile.release]
+opt-level = "z"
+strip = true
+lto = true
+codegen-units = 1
+panic = "abort"
