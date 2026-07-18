@@ -58,10 +58,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 let path =
                     PathBuf::from_iter([&nix_activate_root, host, &url.fullname, relative_path]);
 
-                if path.join("flake.nix").exists() {
-                    if let Some(path_str) = path.to_str() {
-                        return write_use_flake(&envrc_path, path_str);
-                    }
+                if path.join("flake.nix").exists()
+                    && let Some(path_str) = path.to_str()
+                {
+                    return write_use_flake(&envrc_path, path_str);
                 }
             }
         }
