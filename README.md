@@ -23,6 +23,12 @@ direnv allow
 cargo install --git https://github.com/sudosubin/nix-activate
 ```
 
+Or install with Homebrew:
+
+```sh
+brew install sudosubin/tap/nix-activate
+```
+
 ## Configuration
 
 Set `NIX_ACTIVATE_ROOT` to the directory that stores external flake repositories.
