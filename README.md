@@ -20,7 +20,7 @@ direnv allow
 ## Installation
 
 ```sh
-cargo install --git https://github.com/sudosubin/nix-activate
+cargo install nix-activate
 ```
 
 Or install with Homebrew:
